@@ -1,0 +1,19 @@
+<h2><?php echo __('Magento Configuration Settings') ?></h2>
+<div class="messages">
+    <?php echo $block->check('web/seo/use_rewrites', '1', __('Web server rewrites')) ?>
+    <?php echo $block->check('catalog/seo/category_canonical_tag', '1', __('Canonical meta tag for category pages')) ?>
+    <?php echo $block->check('catalog/seo/product_canonical_tag', '1', __('Canonical meta tag for product pages')) ?>
+    <?php echo $block->check('catalog/seo/product_use_categories', '0', __('Product URLs do not use category path')) ?>
+    <?php echo $block->check('catalog/seo/product_url_suffix', '.html', __('Product URL suffix')) ?>
+    <?php echo $block->check('catalog/seo/category_url_suffix', NULL, __('Category URL suffix')) ?>
+</div>
+
+<h2><?php echo __('Magento Default Values') ?></h2>
+<div class="messages">
+    <?php echo $block->check('design/head/default_description', NULL, __('Empty default meta description')) ?>
+    <?php echo $block->check('design/head/default_keywords', NULL, __('Empty default meta keywords')) ?>
+    <?php echo $block->check('design/search_engine_robots/default_robots', 'INDEX,FOLLOW', __('Default meta robots
+    set to INDEX,FOLLOW')) ?>
+    <?php echo $block->check('design/header/logo_alt', 'Magento Commerce', __('Non-default logo alt text'), 'not_equal_to') ?>
+    <?php echo $block->check('design/header/welcome', 'Default welcome msg!', __('Non-default welcome message'), 'not_equal_to') ?>
+</div>

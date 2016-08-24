@@ -23,7 +23,7 @@ class Abstractt extends Template
     protected $reviewCollectionFactory;
     protected $reviewFactory;
     protected $reviewRederer;
-    
+     protected $_storeManager;
     public function __construct(
     \Magento\Framework\View\Element\Template\Context $context,
     HelperData $helperData,
@@ -32,11 +32,13 @@ class Abstractt extends Template
     Registry $registry,
     Logo $logo,
     \Magento\Store\Api\Data\StoreConfigInterface $storeConfig,
+     \Magento\Store\Model\StoreManagerInterface $storeManager,
     CollectionFactory $reviewCollectionFactory,
     ReviewFactory $reviewFactory,
     array $data = []
     )
     {
+      $this->_storeManager = $storeManager;
     $this->helperData = $helperData;
     $this->objectManager = $objectManager;
     $this->checkoutSession = $session;
@@ -47,12 +49,12 @@ class Abstractt extends Template
     $this->storeConfig = $storeConfig;
     parent::__construct($context, $data);
     }
-    
+
     public function getHelper()
     {
         return $this->helperData;
     }
-    
+
     public function getBusinessName()
     {
         return $this->helperData->getConfigValue('general/store_information/name');
@@ -70,7 +72,7 @@ class Abstractt extends Template
         $account = $this->helperData->getGeneralConfig('twitter_account');
         return $prefix . $account;
     }
-    
+
     public function getLangCode()
     {
         /** @var \Magento\Framework\ObjectManagerInterface $om */
@@ -80,7 +82,7 @@ class Abstractt extends Template
         $resolver = strtolower($resolver);
         return $resolver;
     }
-    
+
     public function getCoreObject($helper)
     {
         return $this->objectManager->create($helper);
@@ -90,9 +92,22 @@ class Abstractt extends Template
 
         $url = $this->getCurrentUrl();
 
-        if($this->getGeneralConfig('https_canonical'))
-            $url = str_replace('http:','https:',$url);
+        if($this->getGeneralConfig('https_canonical')){
+            if($this->isFrontUrlSecure()){
+              $url = str_replace('http:','https:',$url);
+            }
+        }
+
 
         return $url;
     }
+    /**
+    * Check if frontend URL is secure
+    *
+    * @return boolean
+    */
+   public function isFrontUrlSecure()
+   {
+       return $this->_storeManager->getStore()->isFrontUrlSecure();
+   }
 }
